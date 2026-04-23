@@ -299,6 +299,89 @@ input,select,textarea{font-family:inherit}
 .online-dot{width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;margin-left:0.25rem}
 .offline-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);display:inline-block;margin-left:0.25rem}
 
+/* === TYPE BADGES === */
+.type-badge{display:inline-flex;align-items:center;gap:0.25rem;padding:0.15rem 0.5rem;border-radius:99px;font-size:0.7rem;font-weight:600}
+.type-candidature{background:rgba(108,99,255,0.15);color:var(--accent)}
+.type-contact{background:rgba(34,197,94,0.15);color:var(--success)}
+.type-chasseur{background:rgba(245,158,11,0.15);color:var(--warning)}
+
+/* === SCORE BADGE === */
+.score-badge{display:inline-flex;align-items:center;gap:0.25rem;padding:0.2rem 0.5rem;border-radius:99px;font-size:0.72rem;font-weight:700}
+.score-high{background:rgba(34,197,94,0.15);color:var(--success)}
+.score-mid{background:rgba(245,158,11,0.15);color:var(--warning)}
+.score-low{background:rgba(100,116,139,0.15);color:var(--text-muted)}
+
+/* === PROFILE SELECTOR === */
+.profile-bar{display:flex;gap:0.4rem;align-items:center;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+.profile-bar::-webkit-scrollbar{display:none}
+.profile-pill{padding:0.25rem 0.75rem;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:0.78rem;font-weight:500;cursor:pointer;transition:all var(--transition);white-space:nowrap;min-height:30px}
+.profile-pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.profile-pill:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+
+/* === CALENDAR === */
+.calendar-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calendar-day-header{text-align:center;font-size:0.75rem;font-weight:600;color:var(--text-muted);padding:0.5rem 0}
+.calendar-day{min-height:80px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:0.4rem;position:relative;transition:border-color var(--transition)}
+.calendar-day:hover{border-color:var(--accent)}
+.calendar-day.today{border-color:var(--accent);background:var(--accent-dim)}
+.calendar-day.other-month{opacity:0.35}
+.calendar-day-num{font-size:0.75rem;font-weight:600;margin-bottom:0.25rem;color:var(--text-secondary)}
+.calendar-event{font-size:0.65rem;padding:0.1rem 0.3rem;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.cal-relance{background:rgba(245,158,11,0.2);color:var(--warning)}
+.cal-entretien{background:rgba(139,92,246,0.2);color:#a78bfa}
+.cal-offre{background:rgba(34,197,94,0.2);color:var(--success)}
+@media(max-width:640px){.calendar-day{min-height:52px}.calendar-event{display:none}.calendar-day-num{font-size:0.7rem}}
+
+/* === HEATMAP === */
+.heatmap-wrap{overflow-x:auto}
+.heatmap{display:flex;gap:3px;align-items:flex-start}
+.heatmap-col{display:flex;flex-direction:column;gap:3px}
+.heatmap-cell{width:12px;height:12px;border-radius:2px;background:var(--bg-hover);transition:all var(--transition);cursor:default}
+.heatmap-cell:hover{outline:1px solid var(--accent)}
+.heatmap-cell.h1{background:rgba(108,99,255,0.25)}
+.heatmap-cell.h2{background:rgba(108,99,255,0.5)}
+.heatmap-cell.h3{background:rgba(108,99,255,0.75)}
+.heatmap-cell.h4{background:#6c63ff}
+.heatmap-months{display:flex;gap:3px;margin-bottom:4px;font-size:0.65rem;color:var(--text-muted)}
+.heatmap-legend{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:0.7rem;color:var(--text-muted)}
+
+/* === TIMELINE PANEL === */
+.timeline-panel{position:fixed;top:0;right:-420px;bottom:0;width:420px;z-index:250;background:var(--bg-secondary);border-left:1px solid var(--border);transition:right 0.3s ease;display:flex;flex-direction:column;box-shadow:-8px 0 32px var(--shadow)}
+.timeline-panel.open{right:0}
+.timeline-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.timeline-body{padding:1.5rem;overflow-y:auto;flex:1}
+.tl-item{display:flex;gap:1rem;margin-bottom:1.5rem;position:relative}
+.tl-item:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:-24px;width:2px;background:var(--border)}
+.tl-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--border);background:var(--bg-card)}
+.tl-dot.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.tl-dot.warn{background:var(--warning);border-color:var(--warning);color:#fff}
+.tl-dot.success{background:var(--success);border-color:var(--success);color:#fff}
+.tl-content{flex:1;padding-top:0.25rem}
+.tl-label{font-size:0.875rem;font-weight:600}
+.tl-date{font-size:0.75rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
+.tl-note{font-size:0.8rem;color:var(--text-secondary);margin-top:0.25rem}
+@media(max-width:640px){.timeline-panel{width:100%;right:-100%}}
+
+/* === MAIL MODAL === */
+.mail-body{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:0.875rem;line-height:1.7;white-space:pre-wrap;color:var(--text-primary);min-height:200px;font-family:'Inter',sans-serif}
+
+/* === SHARE MODAL === */
+.share-url{background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;font-size:0.78rem;font-family:'JetBrains Mono',monospace;color:var(--accent-light);word-break:break-all}
+
+/* === WEEKLY REPORT === */
+.report-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1rem}
+.report-kpi{background:var(--bg-secondary);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.report-kpi-val{font-size:2rem;font-weight:700;color:var(--accent)}
+.report-kpi-lbl{font-size:0.78rem;color:var(--text-secondary);margin-top:0.25rem}
+
+/* === SALARY CHART === */
+.salary-bar-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem}
+.salary-bar-label{font-size:0.78rem;color:var(--text-secondary);width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.salary-bar-wrap{flex:1;background:var(--bg-hover);border-radius:99px;height:10px;overflow:hidden}
+.salary-bar{height:100%;background:var(--accent);border-radius:99px;transition:width 0.5s ease}
+.salary-bar-val{font-size:0.78rem;font-weight:600;color:var(--text-primary);width:80px;text-align:right;flex-shrink:0}
+
 @media(max-width:1024px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.charts-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:1fr}}
 @media(max-width:640px){
   .navbar{padding:0 1rem}.nav-tabs{display:none}.burger-btn{display:flex}
@@ -366,9 +449,11 @@ input,select,textarea{font-family:inherit}
     <button class="nav-tab active" data-view="dashboard"><i data-lucide="layout-dashboard" style="width:15px;height:15px"></i>Dashboard</button>
     <button class="nav-tab" data-view="kanban"><i data-lucide="columns" style="width:15px;height:15px"></i>Kanban</button>
     <button class="nav-tab" data-view="list"><i data-lucide="list" style="width:15px;height:15px"></i>Liste</button>
+    <button class="nav-tab" data-view="calendrier"><i data-lucide="calendar" style="width:15px;height:15px"></i>Calendrier</button>
     <button class="nav-tab" data-view="stats"><i data-lucide="bar-chart-2" style="width:15px;height:15px"></i>Stats</button>
     <button class="nav-tab" data-view="settings"><i data-lucide="settings" style="width:15px;height:15px"></i>Paramètres</button>
   </div>
+  <div class="profile-bar" id="profileBar"></div>
   <div class="nav-actions">
     <button class="btn btn-primary btn-sm" id="addBtn" style="min-height:36px"><i data-lucide="plus" style="width:15px;height:15px"></i>Ajouter</button>
     <button class="icon-btn" id="bellBtn"><i data-lucide="bell" style="width:18px;height:18px"></i><span class="badge" id="bellBadge" style="display:none">0</span></button>
@@ -387,6 +472,7 @@ input,select,textarea{font-family:inherit}
       <button class="drawer-tab active" data-view="dashboard"><i data-lucide="layout-dashboard" style="width:18px;height:18px"></i>Dashboard</button>
       <button class="drawer-tab" data-view="kanban"><i data-lucide="columns" style="width:18px;height:18px"></i>Kanban</button>
       <button class="drawer-tab" data-view="list"><i data-lucide="list" style="width:18px;height:18px"></i>Liste</button>
+      <button class="drawer-tab" data-view="calendrier"><i data-lucide="calendar" style="width:18px;height:18px"></i>Calendrier</button>
       <button class="drawer-tab" data-view="stats"><i data-lucide="bar-chart-2" style="width:18px;height:18px"></i>Stats</button>
       <button class="drawer-tab" data-view="settings"><i data-lucide="settings" style="width:18px;height:18px"></i>Paramètres</button>
     </nav>
@@ -469,6 +555,28 @@ input,select,textarea{font-family:inherit}
     <div id="listEmpty" class="empty-state" style="display:none"><h3>Aucune candidature</h3><p>Ajoutez votre première candidature pour commencer.</p></div>
   </section>
 
+  <!-- CALENDRIER -->
+  <section class="view" id="view-calendrier">
+    <div class="section-header">
+      <h1 class="section-title">Calendrier</h1>
+      <div class="calendar-nav" style="gap:0.5rem;margin:0">
+        <button class="btn btn-secondary btn-sm" id="calPrev"><i data-lucide="chevron-left" style="width:14px;height:14px"></i></button>
+        <span id="calMonthLabel" style="font-weight:600;min-width:140px;text-align:center"></span>
+        <button class="btn btn-secondary btn-sm" id="calNext"><i data-lucide="chevron-right" style="width:14px;height:14px"></i></button>
+        <button class="btn btn-secondary btn-sm" id="calToday">Aujourd'hui</button>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem">
+      <div class="calendar-grid" id="calDayHeaders"></div>
+      <div class="calendar-grid" id="calGrid" style="margin-top:4px"></div>
+    </div>
+    <div style="display:flex;gap:1rem;margin-top:0.75rem;flex-wrap:wrap">
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:0.35rem"><span style="width:10px;height:10px;border-radius:2px;background:rgba(245,158,11,0.4);display:inline-block"></span>Relance prévue</span>
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:0.35rem"><span style="width:10px;height:10px;border-radius:2px;background:rgba(139,92,246,0.4);display:inline-block"></span>Entretien</span>
+      <span style="font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:0.35rem"><span style="width:10px;height:10px;border-radius:2px;background:rgba(34,197,94,0.4);display:inline-block"></span>Offre</span>
+    </div>
+  </section>
+
   <!-- STATS -->
   <section class="view" id="view-stats">
     <div class="section-header"><h1 class="section-title">Statistiques</h1></div>
@@ -477,6 +585,12 @@ input,select,textarea{font-family:inherit}
       <div class="stats-card"><div class="stats-title">Top sources</div><div id="sourcesChart"></div></div>
       <div class="stats-card"><div class="stats-title">Délai moyen de réponse</div><div id="avgResponse"></div></div>
       <div class="stats-card"><div class="stats-title">Répartition par mois</div><div class="chart-container" style="height:200px"><canvas id="chartMonthly"></canvas></div></div>
+      <div class="stats-card" style="grid-column:1/-1"><div class="stats-title">Comparateur de salaires proposés</div><div id="salaryChart"></div></div>
+      <div class="stats-card" style="grid-column:1/-1">
+        <div class="stats-title">Activité sur l'année</div>
+        <div class="heatmap-wrap"><div id="heatmapMonths" class="heatmap-months"></div><div id="heatmap" class="heatmap"></div></div>
+        <div class="heatmap-legend">Moins <span class="heatmap-cell"></span><span class="heatmap-cell h1"></span><span class="heatmap-cell h2"></span><span class="heatmap-cell h3"></span><span class="heatmap-cell h4"></span> Plus</div>
+      </div>
     </div>
   </section>
 
@@ -516,6 +630,24 @@ input,select,textarea{font-family:inherit}
         <label class="toggle"><input type="checkbox" id="toggleTheme" checked><span class="toggle-slider"></span></label>
       </div>
     </div>
+    <div class="settings-section">
+      <div class="settings-section-title"><i data-lucide="user" style="width:18px;height:18px"></i>Multi-profils</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Profils de recherche</div><div class="settings-row-sub">Gérez plusieurs recherches en parallèle</div></div>
+        <button class="btn btn-secondary btn-sm" id="addProfilBtn"><i data-lucide="plus" style="width:13px;height:13px"></i>Ajouter</button>
+      </div>
+      <div id="profilsList" style="margin-top:0.75rem;display:flex;flex-direction:column;gap:0.5rem"></div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title"><i data-lucide="star" style="width:18px;height:18px"></i>Score de compatibilité</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:0.5rem">
+        <div><div class="settings-row-label">Mes compétences</div><div class="settings-row-sub">Séparées par des virgules — utilisées pour scorer chaque offre</div></div>
+        <textarea class="form-input" id="skillsInput" rows="3" placeholder="React, TypeScript, Node.js, SQL, Docker…" style="width:100%"></textarea>
+        <button class="btn btn-primary btn-sm" id="saveSkillsBtn"><i data-lucide="save" style="width:13px;height:13px"></i>Enregistrer</button>
+      </div>
+    </div>
+
     <div class="settings-section">
       <div class="settings-section-title"><i data-lucide="hard-drive" style="width:18px;height:18px"></i>Données</div>
       <div class="settings-row">
@@ -558,6 +690,18 @@ input,select,textarea{font-family:inherit}
             <span class="form-error" id="fPosteErr"></span>
           </div>
           <div class="form-group">
+            <label class="form-label">Type</label>
+            <select class="form-input" id="fType">
+              <option value="candidature">📨 Candidature</option>
+              <option value="contact">📥 Contact entrant</option>
+              <option value="chasseur">🎯 Chasseur de tête</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Profil</label>
+            <select class="form-input" id="fProfil"></select>
+          </div>
+          <div class="form-group">
             <label class="form-label">Date de candidature</label>
             <input type="date" class="form-input" id="fDateCandidate">
           </div>
@@ -591,8 +735,15 @@ input,select,textarea{font-family:inherit}
             </select>
           </div>
           <div class="form-group">
+            <label class="form-label">Salaire proposé (€/an)</label>
+            <input type="number" class="form-input" id="fSalaire" placeholder="45000" min="0" step="1000">
+          </div>
+          <div class="form-group">
             <label class="form-label">Relance prévue</label>
-            <input type="date" class="form-input" id="fRelance">
+            <div style="display:flex;gap:0.5rem;align-items:center">
+              <input type="date" class="form-input" id="fRelance" style="flex:1">
+              <label class="checkbox-item" title="Relance effectuée"><input type="checkbox" id="fRelanceEffectuee"><span style="font-size:0.78rem;color:var(--text-secondary)">Faite</span></label>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label">Date de réponse</label>
@@ -625,6 +776,73 @@ input,select,textarea{font-family:inherit}
   </div>
 </div>
 
+<!-- TIMELINE PANEL -->
+<div class="timeline-panel" id="timelinePanel">
+  <div class="timeline-header">
+    <span style="font-weight:600" id="timelineTitle">Timeline</span>
+    <button class="icon-btn" style="border:none" onclick="document.getElementById('timelinePanel').classList.remove('open')"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+  </div>
+  <div class="timeline-body" id="timelineBody"></div>
+</div>
+
+<!-- MAIL MODAL -->
+<div class="modal-overlay" id="mailOverlay">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-header">
+      <h2 class="modal-title">Mail de relance</h2>
+      <button class="icon-btn" style="border:none" onclick="document.getElementById('mailOverlay').classList.remove('open')"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="mail-body" id="mailBody" contenteditable="true"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('mailOverlay').classList.remove('open')">Fermer</button>
+      <button class="btn btn-primary" id="copyMailBtn"><i data-lucide="copy" style="width:14px;height:14px"></i>Copier</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="shareOverlay">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h2 class="modal-title">Partager en lecture seule</h2>
+      <button class="icon-btn" style="border:none" onclick="document.getElementById('shareOverlay').classList.remove('open')"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem">Ce lien contient une snapshot de vos candidatures. Il n'est pas mis à jour automatiquement.</p>
+      <div class="share-url" id="shareUrl"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('shareOverlay').classList.remove('open')">Fermer</button>
+      <button class="btn btn-primary" id="copyShareBtn"><i data-lucide="copy" style="width:14px;height:14px"></i>Copier le lien</button>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY REPORT MODAL -->
+<div class="modal-overlay" id="weeklyOverlay">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h2 class="modal-title">Rapport de la semaine</h2>
+      <button class="icon-btn" style="border:none" onclick="document.getElementById('weeklyOverlay').classList.remove('open')"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+    </div>
+    <div class="modal-body" id="weeklyBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('weeklyOverlay').classList.remove('open')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE READ-ONLY VIEW (shown when ?share= in URL) -->
+<div id="shareView" style="display:none;padding:2rem;max-width:1000px;margin:0 auto">
+  <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+    <i data-lucide="briefcase" style="width:24px;height:24px;color:var(--accent)"></i>
+    <h1 style="font-size:1.3rem;font-weight:700">Job<span style="color:var(--accent)">Tracker</span> — Vue partagée</h1>
+  </div>
+  <div id="shareContent"></div>
+</div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <script type="module">
@@ -634,6 +852,8 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const APP_PASSWORD      = import.meta.env.VITE_APP_PASSWORD;
 const SETTINGS_KEY      = 'jobTrackerSettings';
 const AUTH_KEY          = 'jobTrackerAuth';
+const SKILLS_KEY        = 'jobTrackerSkills';
+const PROFILS_KEY       = 'jobTrackerProfils';
 
 const STATUTS = [
   { id:'À envoyer',          cls:'s-a-envoyer',          color:'#94a3b8' },
@@ -648,13 +868,17 @@ const STATUTS = [
 const CLOSED = ['Refusée','Abandonnée'];
 const PRIO   = { 1:{icon:'🔴',label:'Haute',cls:'p-1'}, 2:{icon:'🟡',label:'Moyenne',cls:'p-2'}, 3:{icon:'🟢',label:'Basse',cls:'p-3'} };
 
-let db       = null;
-let appData  = [];
-let settings = { notifEnabled:false, notifDays:2, theme:'dark' };
-let editingId = null;
-let sortCol = 'dateCandidate', sortDir = -1;
-let chartDonut = null, chartBar = null, chartMonthly = null;
-let dragSrc = null;
+let db          = null;
+let appData     = [];
+let settings    = { notifEnabled:false, notifDays:2, theme:'dark' };
+let editingId   = null;
+let sortCol     = 'dateCandidate', sortDir = -1;
+let chartDonut  = null, chartBar = null, chartMonthly = null;
+let dragSrc     = null;
+let calDate     = new Date();
+let activeProfil = 'Tous';
+let userSkills  = [];
+let profils     = ['Principal'];
 
 // === DEMO DATA ===
 const DEMO = [
@@ -669,42 +893,50 @@ const DEMO = [
 // === FIELD MAPPING ===
 function fromDb(row) {
   return {
-    id:            row.id,
-    entreprise:    row.entreprise   || '',
-    poste:         row.poste        || '',
-    dateCandidate: row.date_candidate || '',
-    lieu:          row.lieu         || '',
-    source:        row.source       || '',
-    lienAnnonce:   row.lien_annonce || '',
-    statut:        row.statut       || 'À envoyer',
-    contactRH:     row.contact_rh   || '',
-    docsEnvoyes:   row.docs_envoyes || [],
-    relancePrevue: row.relance_prevue || '',
-    dateReponse:   row.date_reponse || '',
-    feedback:      row.feedback     || '',
-    priorite:      row.priorite     || 2,
-    notes:         row.notes        || '',
-    createdAt:     row.created_at,
-    updatedAt:     row.updated_at,
+    id:               row.id,
+    entreprise:       row.entreprise        || '',
+    poste:            row.poste             || '',
+    dateCandidate:    row.date_candidate    || '',
+    lieu:             row.lieu              || '',
+    source:           row.source            || '',
+    lienAnnonce:      row.lien_annonce      || '',
+    statut:           row.statut            || 'À envoyer',
+    contactRH:        row.contact_rh        || '',
+    docsEnvoyes:      row.docs_envoyes      || [],
+    relancePrevue:    row.relance_prevue    || '',
+    relanceEffectuee: row.relance_effectuee || false,
+    dateReponse:      row.date_reponse      || '',
+    feedback:         row.feedback          || '',
+    priorite:         row.priorite          || 2,
+    notes:            row.notes             || '',
+    typeCandidature:  row.type_candidature  || 'candidature',
+    salairePropose:   row.salaire_propose   || null,
+    profil:           row.profil            || 'Principal',
+    createdAt:        row.created_at,
+    updatedAt:        row.updated_at,
   };
 }
 function toDb(c) {
   return {
-    entreprise:    c.entreprise    || null,
-    poste:         c.poste         || null,
-    date_candidate:c.dateCandidate || null,
-    lieu:          c.lieu          || null,
-    source:        c.source        || null,
-    lien_annonce:  c.lienAnnonce   || null,
-    statut:        c.statut        || 'À envoyer',
-    contact_rh:    c.contactRH     || null,
-    docs_envoyes:  c.docsEnvoyes   || [],
-    relance_prevue:c.relancePrevue || null,
-    date_reponse:  c.dateReponse   || null,
-    feedback:      c.feedback      || null,
-    priorite:      c.priorite      || 2,
-    notes:         c.notes         || null,
-    updated_at:    new Date().toISOString(),
+    entreprise:         c.entreprise        || null,
+    poste:              c.poste             || null,
+    date_candidate:     c.dateCandidate     || null,
+    lieu:               c.lieu              || null,
+    source:             c.source            || null,
+    lien_annonce:       c.lienAnnonce       || null,
+    statut:             c.statut            || 'À envoyer',
+    contact_rh:         c.contactRH         || null,
+    docs_envoyes:       c.docsEnvoyes       || [],
+    relance_prevue:     c.relancePrevue     || null,
+    relance_effectuee:  c.relanceEffectuee  || false,
+    date_reponse:       c.dateReponse       || null,
+    feedback:           c.feedback          || null,
+    priorite:           c.priorite          || 2,
+    notes:              c.notes             || null,
+    type_candidature:   c.typeCandidature   || 'candidature',
+    salaire_propose:    c.salairePropose     ? parseInt(c.salairePropose) : null,
+    profil:             c.profil            || 'Principal',
+    updated_at:         new Date().toISOString(),
   };
 }
 
@@ -741,8 +973,12 @@ async function refreshData() {
 function setLoading(v) { document.getElementById('loadingOverlay').classList.toggle('visible', v); }
 
 // === SETTINGS ===
-function loadSettings() { try { return { ...settings, ...JSON.parse(localStorage.getItem(SETTINGS_KEY)) }; } catch { return settings; } }
-function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
+function loadSettings()  { try { return { ...settings, ...JSON.parse(localStorage.getItem(SETTINGS_KEY)) }; } catch { return settings; } }
+function saveSettings()  { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
+function loadSkills()    { try { return JSON.parse(localStorage.getItem(SKILLS_KEY)) || []; } catch { return []; } }
+function saveSkills(arr) { localStorage.setItem(SKILLS_KEY, JSON.stringify(arr)); }
+function loadProfils()   { try { return JSON.parse(localStorage.getItem(PROFILS_KEY)) || ['Principal']; } catch { return ['Principal']; } }
+function saveProfils()   { localStorage.setItem(PROFILS_KEY, JSON.stringify(profils)); }
 
 // === INIT ===
 async function init() {
@@ -776,16 +1012,23 @@ async function connectSupabase() {
       showToast('6 candidatures de démo ajoutées ✓', 'success');
     }
 
+    userSkills = loadSkills();
+    profils    = loadProfils();
+
     appData = await fetchAll();
     setLoading(false);
     bindEvents();
     renderAll();
     setupRealtime();
     schedulePeriodicCheck();
+    checkShareMode();
 
     if (settings.notifEnabled) document.getElementById('toggleNotif').checked = true;
     document.getElementById('notifDays').value = settings.notifDays;
+    document.getElementById('skillsInput').value = userSkills.join(', ');
     updateNotifPermBadge();
+    renderProfilSelector();
+    renderProfilSettings();
     lucide.createIcons();
 
   } catch(e) {
@@ -811,18 +1054,22 @@ function setupRealtime() {
     });
 }
 
+// === FILTERED DATA ===
+function filteredData() {
+  return activeProfil === 'Tous' ? appData : appData.filter(c => c.profil === activeProfil);
+}
+
 // === RENDER ALL ===
 function renderAll() {
   renderAlerts();
   renderDashboard();
-  const kv = document.getElementById('view-kanban');
-  if (kv && kv.classList.contains('active')) renderKanban();
-  const lv = document.getElementById('view-list');
-  if (lv && lv.classList.contains('active')) renderList();
-  else scheduleListRender();
-}
-function scheduleListRender() {
-  // list will render on tab switch; just keep filters up to date
+  const active = document.querySelector('.view.active');
+  if (!active) return;
+  const id = active.id;
+  if (id === 'view-kanban')    renderKanban();
+  if (id === 'view-list')      renderList();
+  if (id === 'view-calendrier')renderCalendrier();
+  if (id === 'view-stats')     renderStats();
 }
 
 // === THEME ===
@@ -844,8 +1091,8 @@ function populateStatutSelects() {
 function getAlerts() {
   const today = new Date().toISOString().split('T')[0];
   const soon  = new Date(Date.now() + settings.notifDays * 86400000).toISOString().split('T')[0];
-  const overdue  = appData.filter(c => c.relancePrevue && c.relancePrevue < today && !CLOSED.includes(c.statut));
-  const upcoming = appData.filter(c => c.relancePrevue && c.relancePrevue >= today && c.relancePrevue <= soon && !CLOSED.includes(c.statut));
+  const overdue  = appData.filter(c => c.relancePrevue && c.relancePrevue < today && !CLOSED.includes(c.statut) && !c.relanceEffectuee);
+  const upcoming = appData.filter(c => c.relancePrevue && c.relancePrevue >= today && c.relancePrevue <= soon && !CLOSED.includes(c.statut) && !c.relanceEffectuee);
   return { overdue, upcoming };
 }
 function renderAlerts() {
@@ -937,7 +1184,8 @@ function renderKanban() {
       const ra=getRelanceAlert(c);
       let moveBtns='';
       if(isMobile) moveBtns=`<div class="kanban-move-btns">${STATUTS.filter(st=>st.id!==s.id).map(st=>`<button class="kanban-move-btn" onclick="doUpdateStatut('${c.id}','${esc(st.id)}')">${esc(st.id)}</button>`).join('')}</div>`;
-      card.innerHTML=`<div class="kanban-card-top"><span class="kanban-card-company">${esc(c.entreprise)}</span><span class="priority-badge ${PRIO[c.priorite].cls}">${PRIO[c.priorite].icon}</span></div><div class="kanban-card-job">${esc(c.poste)}</div><div class="kanban-card-footer"><span class="kanban-card-date">${fmt(c.dateCandidate)}</span>${daysSince!==null?`<span class="kanban-card-days">${daysSince}j</span>`:''} ${ra?`<span class="relance-dot ${ra==='overdue'?'overdue':''}" title="${ra==='overdue'?'Relance en retard':'Relance à venir'}"></span>`:''}</div>${moveBtns}<div style="display:flex;gap:0.4rem;margin-top:0.5rem"><button class="btn btn-secondary btn-sm btn-icon" onclick="openEdit('${c.id}')" title="Modifier"><i data-lucide="edit-2" style="width:12px;height:12px"></i></button><button class="btn btn-danger btn-sm btn-icon" onclick="doDeleteApp('${c.id}')" title="Supprimer"><i data-lucide="trash-2" style="width:12px;height:12px"></i></button></div>`;
+      const score = scoreBadge(c);
+      card.innerHTML=`<div class="kanban-card-top"><span class="kanban-card-company">${esc(c.entreprise)}</span><div style="display:flex;gap:0.25rem;align-items:center">${score}<span class="priority-badge ${PRIO[c.priorite].cls}">${PRIO[c.priorite].icon}</span></div></div>${typeBadge(c.typeCandidature)}<div class="kanban-card-job">${esc(c.poste)}</div><div class="kanban-card-footer"><span class="kanban-card-date">${fmt(c.dateCandidate)}</span>${daysSince!==null?`<span class="kanban-card-days">${daysSince}j</span>`:''} ${ra?`<span class="relance-dot ${ra==='overdue'?'overdue':''}" title="${ra==='overdue'?'Relance en retard':'Relance à venir'}"></span>`:''} ${c.relanceEffectuee?'<span style="font-size:0.65rem;color:var(--success)">✓ relancé</span>':''}</div>${moveBtns}<div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap"><button class="btn btn-secondary btn-sm btn-icon" onclick="openEdit('${c.id}')" title="Modifier"><i data-lucide="edit-2" style="width:12px;height:12px"></i></button><button class="btn btn-secondary btn-sm btn-icon" onclick="openTimeline('${c.id}')" title="Timeline"><i data-lucide="git-branch" style="width:12px;height:12px"></i></button><button class="btn btn-secondary btn-sm btn-icon" onclick="openMailRelance('${c.id}')" title="Mail de relance"><i data-lucide="mail" style="width:12px;height:12px"></i></button><button class="btn btn-danger btn-sm btn-icon" onclick="doDeleteApp('${c.id}')" title="Supprimer"><i data-lucide="trash-2" style="width:12px;height:12px"></i></button></div>`;
       card.addEventListener('dragstart',()=>{dragSrc=c.id;card.classList.add('dragging')});
       card.addEventListener('dragend',()=>card.classList.remove('dragging'));
       cardsEl.appendChild(card);
@@ -990,7 +1238,8 @@ function renderList() {
   const today=new Date().toISOString().split('T')[0];
   tbody.innerHTML=filtered.map(c=>{
     const over=c.relancePrevue&&c.relancePrevue<today&&!CLOSED.includes(c.statut);
-    return `<tr id="row-${c.id}"><td data-label="Entreprise"><strong>${esc(c.entreprise)}</strong></td><td data-label="Poste">${esc(c.poste)}</td><td data-label="Statut">${statutBadge(c.statut)}</td><td data-label="Date" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem">${fmt(c.dateCandidate)}</td><td data-label="Lieu">${esc(c.lieu||'—')}</td><td data-label="Priorité">${prioBadge(c.priorite)}</td><td data-label="Relance" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem${over?';color:var(--danger);font-weight:600':''}">${fmt(c.relancePrevue)||'—'}</td><td class="td-actions"><button class="btn btn-secondary btn-sm btn-icon" onclick="openEdit('${c.id}')"><i data-lucide="edit-2" style="width:12px;height:12px"></i></button> <button class="btn btn-danger btn-sm btn-icon" onclick="doDeleteApp('${c.id}')"><i data-lucide="trash-2" style="width:12px;height:12px"></i></button></td></tr>`;
+    const score=scoreBadge(c);
+    return `<tr id="row-${c.id}"><td data-label="Entreprise"><strong>${esc(c.entreprise)}</strong>${typeBadge(c.typeCandidature)}</td><td data-label="Poste">${esc(c.poste)} ${score}</td><td data-label="Statut">${statutBadge(c.statut)}</td><td data-label="Date" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem">${fmt(c.dateCandidate)}</td><td data-label="Lieu">${esc(c.lieu||'—')}</td><td data-label="Priorité">${prioBadge(c.priorite)}</td><td data-label="Relance" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem${over?';color:var(--danger);font-weight:600':''}">${c.relanceEffectuee?'<span style="color:var(--success);font-size:0.75rem">✓ faite</span>':(fmt(c.relancePrevue)||'—')}</td><td class="td-actions" style="gap:0.25rem"><button class="btn btn-secondary btn-sm btn-icon" onclick="openEdit('${c.id}')" title="Modifier"><i data-lucide="edit-2" style="width:12px;height:12px"></i></button><button class="btn btn-secondary btn-sm btn-icon" onclick="openTimeline('${c.id}')" title="Timeline"><i data-lucide="git-branch" style="width:12px;height:12px"></i></button><button class="btn btn-secondary btn-sm btn-icon" onclick="openMailRelance('${c.id}')" title="Mail relance"><i data-lucide="mail" style="width:12px;height:12px"></i></button><button class="btn btn-danger btn-sm btn-icon" onclick="doDeleteApp('${c.id}')" title="Supprimer"><i data-lucide="trash-2" style="width:12px;height:12px"></i></button></td></tr>`;
   }).join('');
   lucide.createIcons();
 }
@@ -1017,6 +1266,8 @@ function renderStats() {
   const textSec=getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim();
   const bdr=getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
   chartMonthly=new Chart(ctx,{type:'bar',data:{labels:mkeys,datasets:[{label:'Candidatures',data:mkeys.map(m=>months[m]),backgroundColor:'#6c63ff99',borderColor:'#6c63ff',borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:textSec},grid:{color:'transparent'}},y:{ticks:{color:textSec,stepSize:1},grid:{color:bdr}}}}});
+  renderSalaryChart();
+  renderHeatmap();
 }
 
 // === MODAL ===
@@ -1035,6 +1286,8 @@ function openEdit(id) {
   document.getElementById('modalTitle').textContent='Modifier la candidature';
   document.getElementById('fEntreprise').value=c.entreprise||'';
   document.getElementById('fPoste').value=c.poste||'';
+  document.getElementById('fType').value=c.typeCandidature||'candidature';
+  document.getElementById('fProfil').value=c.profil||'Principal';
   document.getElementById('fDateCandidate').value=c.dateCandidate||'';
   document.getElementById('fStatut').value=c.statut||'À envoyer';
   document.getElementById('fLieu').value=c.lieu||'';
@@ -1042,7 +1295,9 @@ function openEdit(id) {
   document.getElementById('fLien').value=c.lienAnnonce||'';
   document.getElementById('fContact').value=c.contactRH||'';
   document.getElementById('fPriorite').value=c.priorite||2;
+  document.getElementById('fSalaire').value=c.salairePropose||'';
   document.getElementById('fRelance').value=c.relancePrevue||'';
+  document.getElementById('fRelanceEffectuee').checked=c.relanceEffectuee||false;
   document.getElementById('fDateReponse').value=c.dateReponse||'';
   document.getElementById('fFeedback').value=c.feedback||'';
   document.getElementById('fNotes').value=c.notes||'';
@@ -1066,7 +1321,7 @@ async function saveModal() {
   if(lien&&!lien.startsWith('http')){document.getElementById('fLienErr').textContent='URL invalide';document.getElementById('fLien').classList.add('error');valid=false;}
   if(!valid) return;
   const docs=[...document.querySelectorAll('.doc-check:checked')].map(cb=>cb.value);
-  const payload={entreprise,poste,dateCandidate:document.getElementById('fDateCandidate').value,statut:document.getElementById('fStatut').value,lieu:document.getElementById('fLieu').value,source:document.getElementById('fSource').value,lienAnnonce:lien,contactRH:document.getElementById('fContact').value,priorite:parseInt(document.getElementById('fPriorite').value),relancePrevue:document.getElementById('fRelance').value,dateReponse:document.getElementById('fDateReponse').value,feedback:document.getElementById('fFeedback').value,notes:document.getElementById('fNotes').value,docsEnvoyes:docs};
+  const payload={entreprise,poste,typeCandidature:document.getElementById('fType').value,profil:document.getElementById('fProfil').value,dateCandidate:document.getElementById('fDateCandidate').value,statut:document.getElementById('fStatut').value,lieu:document.getElementById('fLieu').value,source:document.getElementById('fSource').value,lienAnnonce:lien,contactRH:document.getElementById('fContact').value,priorite:parseInt(document.getElementById('fPriorite').value),salairePropose:document.getElementById('fSalaire').value||null,relancePrevue:document.getElementById('fRelance').value,relanceEffectuee:document.getElementById('fRelanceEffectuee').checked,dateReponse:document.getElementById('fDateReponse').value,feedback:document.getElementById('fFeedback').value,notes:document.getElementById('fNotes').value,docsEnvoyes:docs};
   setLoading(true);
   try {
     if(editingId){ await updateRow(editingId,payload); showToast('Candidature mise à jour','success'); }
@@ -1106,9 +1361,10 @@ function switchView(name) {
   document.querySelectorAll('.nav-tab,.drawer-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===name));
   const v=document.getElementById('view-'+name); if(v) v.classList.add('active');
   closeDrawer(); document.getElementById('notifPanel').classList.remove('open');
-  if(name==='kanban') renderKanban();
-  if(name==='stats') renderStats();
-  if(name==='list') renderList();
+  if(name==='kanban')     renderKanban();
+  if(name==='stats')      renderStats();
+  if(name==='list')       renderList();
+  if(name==='calendrier') renderCalendrier();
 }
 
 // === NOTIFICATIONS ===
@@ -1139,6 +1395,268 @@ function updateNotifPermBadge(){
   badge.className='notif-status-badge notif-status-'+perm;
   badge.textContent=perm==='granted'?'Accordée':perm==='denied'?'Refusée':'En attente';
   sub.textContent=perm==='denied'?'Autorisez dans les paramètres du navigateur':perm==='granted'?'Notifications actives':'Permission non encore demandée';
+}
+
+// === SCORE COMPATIBILITÉ ===
+function computeScore(c) {
+  if (!userSkills.length) return null;
+  const text = (c.poste + ' ' + c.notes + ' ' + c.feedback).toLowerCase();
+  const matches = userSkills.filter(s => text.includes(s.toLowerCase().trim()));
+  return Math.round(matches.length / userSkills.length * 100);
+}
+function scoreBadge(c) {
+  const s = computeScore(c);
+  if (s === null) return '';
+  const cls = s >= 70 ? 'score-high' : s >= 40 ? 'score-mid' : 'score-low';
+  return `<span class="score-badge ${cls}">${s}%</span>`;
+}
+
+// === TYPE BADGE ===
+function typeBadge(t) {
+  if (t === 'contact')  return '<span class="type-badge type-contact">📥 Contact</span>';
+  if (t === 'chasseur') return '<span class="type-badge type-chasseur">🎯 Chasseur</span>';
+  return '';
+}
+
+// === PROFILS ===
+function renderProfilSelector() {
+  const bar = document.getElementById('profileBar');
+  if (!bar) return;
+  const all = ['Tous', ...profils];
+  bar.innerHTML = all.map(p => `<button class="profile-pill${p===activeProfil?' active':''}" data-profil="${esc(p)}">${esc(p)}</button>`).join('');
+  bar.querySelectorAll('.profile-pill').forEach(btn => btn.addEventListener('click', () => {
+    activeProfil = btn.dataset.profil;
+    renderProfilSelector();
+    renderAll();
+  }));
+  const fProfil = document.getElementById('fProfil');
+  if (fProfil) fProfil.innerHTML = profils.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join('');
+}
+function renderProfilSettings() {
+  const el = document.getElementById('profilsList');
+  if (!el) return;
+  el.innerHTML = profils.map(p => `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:0.625rem 1rem;font-size:0.875rem">
+    <span>${esc(p)}</span>
+    ${p !== 'Principal' ? `<button class="btn btn-danger btn-sm btn-icon" onclick="deleteProfil('${esc(p)}')"><i data-lucide="trash-2" style="width:12px;height:12px"></i></button>` : '<span style="font-size:0.75rem;color:var(--text-muted)">défaut</span>'}
+  </div>`).join('');
+  lucide.createIcons();
+}
+function deleteProfil(nom) {
+  if (!confirm(`Supprimer le profil "${nom}" ? Les candidatures restent mais perdent ce profil.`)) return;
+  profils = profils.filter(p => p !== nom);
+  saveProfils();
+  renderProfilSelector();
+  renderProfilSettings();
+}
+
+// === CALENDRIER ===
+function renderCalendrier() {
+  const year = calDate.getFullYear(), month = calDate.getMonth();
+  document.getElementById('calMonthLabel').textContent = new Date(year, month, 1).toLocaleDateString('fr-FR', { month:'long', year:'numeric' });
+  const headers = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  document.getElementById('calDayHeaders').innerHTML = headers.map(h => `<div class="calendar-day-header">${h}</div>`).join('');
+
+  const firstDay = new Date(year, month, 1);
+  let startOffset = firstDay.getDay() - 1; if (startOffset < 0) startOffset = 6;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const prevDays = new Date(year, month, 0).getDate();
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  const events = {};
+  filteredData().forEach(c => {
+    const addEv = (date, type, label) => {
+      if (!date) return;
+      if (!events[date]) events[date] = [];
+      events[date].push({ type, label, id: c.id });
+    };
+    if (c.relancePrevue && !c.relanceEffectuee) addEv(c.relancePrevue, 'relance', c.entreprise);
+    if (c.statut === 'Entretien planifié' && c.dateCandidate) addEv(c.dateCandidate, 'entretien', c.entreprise);
+    if (c.statut === 'Offre reçue' && c.dateReponse) addEv(c.dateReponse, 'offre', c.entreprise);
+  });
+
+  let cells = '';
+  for (let i = 0; i < startOffset; i++) {
+    const d = prevDays - startOffset + i + 1;
+    cells += `<div class="calendar-day other-month"><div class="calendar-day-num">${d}</div></div>`;
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === todayStr;
+    const dayEvents = events[dateStr] || [];
+    const evHtml = dayEvents.slice(0,3).map(e => `<div class="calendar-event cal-${e.type}" onclick="navigateTo('list','${e.id}')" title="${esc(e.label)}">${esc(e.label)}</div>`).join('');
+    const more = dayEvents.length > 3 ? `<div style="font-size:0.6rem;color:var(--text-muted)">+${dayEvents.length-3}</div>` : '';
+    cells += `<div class="calendar-day${isToday?' today':''}"><div class="calendar-day-num">${d}</div>${evHtml}${more}</div>`;
+  }
+  const total = startOffset + daysInMonth;
+  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let i = 1; i <= remaining; i++) cells += `<div class="calendar-day other-month"><div class="calendar-day-num">${i}</div></div>`;
+  document.getElementById('calGrid').innerHTML = cells;
+}
+
+// === HEATMAP ===
+function renderHeatmap() {
+  const counts = {};
+  filteredData().forEach(c => { if (c.dateCandidate) counts[c.dateCandidate] = (counts[c.dateCandidate]||0)+1; });
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(today); start.setDate(start.getDate() - 364);
+  // align to Monday
+  while (start.getDay() !== 1) start.setDate(start.getDate() - 1);
+
+  const cols = []; const monthLabels = []; let lastMonth = -1;
+  for (let col = 0; col < 53; col++) {
+    const cells = [];
+    for (let row = 0; row < 7; row++) {
+      const d = new Date(start); d.setDate(d.getDate() + col*7 + row);
+      if (d > today) { cells.push('<div class="heatmap-cell" style="opacity:0"></div>'); continue; }
+      const ds = d.toISOString().split('T')[0];
+      const n = counts[ds] || 0;
+      const cls = n === 0 ? '' : n === 1 ? 'h1' : n === 2 ? 'h2' : n === 3 ? 'h3' : 'h4';
+      cells.push(`<div class="heatmap-cell ${cls}" title="${ds}: ${n} candidature(s)"></div>`);
+      if (row === 0 && d.getMonth() !== lastMonth) {
+        lastMonth = d.getMonth();
+        monthLabels.push({ col, label: d.toLocaleDateString('fr-FR', { month:'short' }) });
+      }
+    }
+    cols.push(`<div class="heatmap-col">${cells.join('')}</div>`);
+  }
+  document.getElementById('heatmap').innerHTML = cols.join('');
+  // month labels
+  const mEl = document.getElementById('heatmapMonths');
+  let mHtml = '';
+  monthLabels.forEach((m, i) => {
+    const nextCol = monthLabels[i+1]?.col ?? 53;
+    const width = (nextCol - m.col) * 15;
+    mHtml += `<span style="min-width:${width}px">${m.label}</span>`;
+  });
+  mEl.innerHTML = mHtml;
+}
+
+// === SALARY CHART ===
+function renderSalaryChart() {
+  const withSalary = filteredData().filter(c => c.salairePropose).sort((a,b) => b.salairePropose - a.salairePropose).slice(0,8);
+  const el = document.getElementById('salaryChart');
+  if (!withSalary.length) { el.innerHTML = '<div class="notif-empty">Aucun salaire renseigné</div>'; return; }
+  const max = Math.max(...withSalary.map(c => c.salairePropose));
+  el.innerHTML = withSalary.map(c => `<div class="salary-bar-row">
+    <span class="salary-bar-label" title="${esc(c.entreprise)}">${esc(c.entreprise)}</span>
+    <div class="salary-bar-wrap"><div class="salary-bar" style="width:${Math.round(c.salairePropose/max*100)}%"></div></div>
+    <span class="salary-bar-val">${c.salairePropose.toLocaleString('fr-FR')} €</span>
+  </div>`).join('');
+}
+
+// === TIMELINE ===
+function openTimeline(id) {
+  const c = appData.find(d => d.id === id); if (!c) return;
+  document.getElementById('timelineTitle').textContent = `${c.entreprise} — ${c.poste}`;
+  const events = [];
+  if (c.dateCandidate) events.push({ date:c.dateCandidate, label:'Candidature envoyée', cls:'done', icon:'send' });
+  if (c.relancePrevue) events.push({ date:c.relancePrevue, label: c.relanceEffectuee ? 'Relance effectuée ✓' : 'Relance prévue', cls: c.relanceEffectuee ? 'success' : (c.relancePrevue < today() ? 'warn' : ''), icon:'bell' });
+  if (c.dateReponse)   events.push({ date:c.dateReponse, label:'Réponse reçue', cls:'done', icon:'mail' });
+  if (['Entretien planifié','Entretien passé'].includes(c.statut)) events.push({ date:c.dateReponse||c.dateCandidate, label:c.statut, cls:'done', icon:'users' });
+  if (c.statut === 'Offre reçue') events.push({ date:c.dateReponse, label:'Offre reçue 🎉', cls:'success', icon:'star' });
+  events.sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  document.getElementById('timelineBody').innerHTML = events.length
+    ? events.map(e => `<div class="tl-item"><div class="tl-dot ${e.cls}"><i data-lucide="${e.icon}" style="width:14px;height:14px"></i></div><div class="tl-content"><div class="tl-label">${e.label}</div><div class="tl-date">${fmt(e.date)}</div></div></div>`).join('')
+    + (c.notes ? `<div style="margin-top:1rem;padding:0.875rem;background:var(--bg-hover);border-radius:8px;font-size:0.85rem;color:var(--text-secondary)">${esc(c.notes)}</div>` : '')
+    : '<div class="notif-empty">Aucun événement enregistré</div>';
+  document.getElementById('timelinePanel').classList.add('open');
+  lucide.createIcons();
+}
+
+// === MAIL DE RELANCE ===
+function openMailRelance(id) {
+  const c = appData.find(d => d.id === id); if (!c) return;
+  const days = c.dateCandidate ? Math.floor((Date.now() - new Date(c.dateCandidate)) / 86400000) : '?';
+  const contact = c.contactRH ? `\n\nÀ l'attention de ${c.contactRH},` : '';
+  const mail = `Objet : Relance — ${c.poste} chez ${c.entreprise}
+${contact}
+
+Madame, Monsieur,
+
+Je me permets de revenir vers vous concernant ma candidature au poste de **${c.poste}** au sein de **${c.entreprise}**, que j'ai soumise il y a ${days} jour(s).
+
+Toujours très motivé(e) par cette opportunité, je souhaitais m'assurer que vous aviez bien reçu mon dossier et savoir si vous aviez des questions complémentaires.
+
+Je reste disponible pour un échange à votre convenance.
+
+Cordialement,
+[Votre prénom NOM]
+[Votre email] | [Votre téléphone]`;
+  document.getElementById('mailBody').textContent = mail;
+  document.getElementById('mailOverlay').classList.add('open');
+}
+
+// === EXPORT ICAL ===
+function exportICal() {
+  const events = [];
+  filteredData().forEach(c => {
+    if (c.relancePrevue && !c.relanceEffectuee) {
+      events.push({ date:c.relancePrevue, summary:`Relance — ${c.entreprise} (${c.poste})`, desc:c.notes });
+    }
+    if (c.statut === 'Entretien planifié' && c.dateCandidate) {
+      events.push({ date:c.dateCandidate, summary:`Entretien — ${c.entreprise} (${c.poste})`, desc:c.lieu });
+    }
+  });
+  if (!events.length) { showToast('Aucun événement à exporter', 'warning'); return; }
+  const ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//JobTracker//FR', ...events.map(e => {
+    const dt = e.date.replace(/-/g,'');
+    return `BEGIN:VEVENT\nDTSTAMP:${new Date().toISOString().replace(/[-:.]/g,'').slice(0,15)}Z\nDTSTART;VALUE=DATE:${dt}\nDTEND;VALUE=DATE:${dt}\nSUMMARY:${e.summary}\nDESCRIPTION:${e.desc||''}\nEND:VEVENT`;
+  }), 'END:VCALENDAR'].join('\r\n');
+  dlFile(new Blob([ics], { type:'text/calendar' }), `job-tracker-${today()}.ics`);
+  showToast('Export iCal téléchargé', 'success');
+}
+
+// === MODE PARTAGE ===
+function generateShareLink() {
+  const data = filteredData().map(c => ({ entreprise:c.entreprise, poste:c.poste, statut:c.statut, dateCandidate:c.dateCandidate, lieu:c.lieu, priorite:c.priorite, typeCandidature:c.typeCandidature }));
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  const url = `${location.origin}${location.pathname}?share=${encoded}`;
+  document.getElementById('shareUrl').textContent = url;
+  document.getElementById('shareOverlay').classList.add('open');
+}
+function checkShareMode() {
+  const params = new URLSearchParams(location.search);
+  const share = params.get('share');
+  if (!share) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(share))));
+    document.getElementById('shareView').style.display = 'block';
+    document.querySelector('.main-wrapper').style.display = 'none';
+    document.querySelector('.navbar').style.display = 'none';
+    document.getElementById('shareContent').innerHTML = `
+      <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.875rem">${data.length} candidature(s) partagée(s)</p>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+      ${data.map(c => `<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+        <div><strong>${esc(c.entreprise)}</strong><span style="color:var(--text-secondary);margin-left:0.5rem">${esc(c.poste)}</span></div>
+        <div style="display:flex;gap:0.5rem;align-items:center">${statutBadge(c.statut)}<span style="font-size:0.78rem;color:var(--text-muted)">${fmt(c.dateCandidate)}</span></div>
+      </div>`).join('')}
+      </div>`;
+    lucide.createIcons();
+  } catch(e) { console.error('Share decode error', e); }
+}
+
+// === RAPPORT HEBDOMADAIRE ===
+function openWeeklyReport() {
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay() + (now.getDay()===0?-6:1)); weekStart.setHours(0,0,0,0);
+  const weekEnd   = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 7);
+  const wS = weekStart.toISOString().split('T')[0];
+  const wE = weekEnd.toISOString().split('T')[0];
+  const d = filteredData();
+  const sent      = d.filter(c => c.dateCandidate >= wS && c.dateCandidate < wE).length;
+  const relances  = d.filter(c => c.relancePrevue >= wS && c.relancePrevue < wE && !c.relanceEffectuee).length;
+  const entretiens= d.filter(c => ['Entretien planifié','Entretien passé'].includes(c.statut) && (c.dateCandidate >= wS || c.updatedAt >= wS+'T')).length;
+  const open      = d.filter(c => !CLOSED.includes(c.statut)).length;
+  const overdue   = d.filter(c => c.relancePrevue && c.relancePrevue < wS && !c.relanceEffectuee && !CLOSED.includes(c.statut)).length;
+  document.getElementById('weeklyBody').innerHTML = `
+    <div class="report-grid">
+      <div class="report-kpi"><div class="report-kpi-val">${sent}</div><div class="report-kpi-lbl">Candidatures cette semaine</div></div>
+      <div class="report-kpi"><div class="report-kpi-val">${relances}</div><div class="report-kpi-lbl">Relances à faire cette semaine</div></div>
+      <div class="report-kpi"><div class="report-kpi-val">${entretiens}</div><div class="report-kpi-lbl">Entretiens en cours</div></div>
+      <div class="report-kpi"><div class="report-kpi-val">${open}</div><div class="report-kpi-lbl">Candidatures ouvertes</div></div>
+    </div>
+    ${overdue ? `<div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:0.875rem;font-size:0.875rem;color:var(--danger)">⚠️ ${overdue} relance(s) en retard à traiter</div>` : '<div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:0.875rem;font-size:0.875rem;color:var(--success)">✓ Aucune relance en retard</div>'}`;
+  document.getElementById('weeklyOverlay').classList.add('open');
 }
 
 // === IMPORT / EXPORT ===
@@ -1247,15 +1765,78 @@ function bindEvents(){
     if(g){sendPushNotif({title:'🔔 Test — Job Tracker',body:'Les notifications fonctionnent !',tag:'test-notif',data:null});showToast('Notification envoyée !','success');}
     else showToast('Activez les notifications d\'abord','warning');
   });
+  // Calendrier
+  document.getElementById('calPrev').addEventListener('click',()=>{ calDate.setMonth(calDate.getMonth()-1); renderCalendrier(); });
+  document.getElementById('calNext').addEventListener('click',()=>{ calDate.setMonth(calDate.getMonth()+1); renderCalendrier(); });
+  document.getElementById('calToday').addEventListener('click',()=>{ calDate=new Date(); renderCalendrier(); });
+
+  // Dashboard rapport
+  document.getElementById('addBtnDash').insertAdjacentHTML('afterend','<button class="btn btn-secondary" id="weeklyBtn" style="margin-left:0.5rem"><i data-lucide="bar-chart" style="width:15px;height:15px"></i>Rapport</button>');
+  document.getElementById('weeklyBtn').addEventListener('click', openWeeklyReport);
+  lucide.createIcons();
+
+  // Mail copy
+  document.getElementById('copyMailBtn').addEventListener('click',()=>{
+    navigator.clipboard.writeText(document.getElementById('mailBody').textContent).then(()=>showToast('Mail copié !','success'));
+  });
+
+  // Share copy
+  document.getElementById('copyShareBtn').addEventListener('click',()=>{
+    navigator.clipboard.writeText(document.getElementById('shareUrl').textContent).then(()=>showToast('Lien copié !','success'));
+  });
+
+  // Settings: share button
+  const settingsSection = document.querySelector('#view-settings .settings-section:last-child');
+  if (settingsSection) {
+    const shareRow = document.createElement('div');
+    shareRow.className = 'settings-row';
+    shareRow.innerHTML = '<div><div class="settings-row-label">Générer un lien de partage</div><div class="settings-row-sub">Vue lecture seule de vos candidatures</div></div><button class="btn btn-secondary btn-sm" id="generateShareBtn"><i data-lucide="share-2" style="width:13px;height:13px"></i>Générer</button>';
+    settingsSection.querySelector('.settings-section-title').after(shareRow);
+    document.getElementById('generateShareBtn').addEventListener('click', generateShareLink);
+  }
+
+  // Settings: iCal export
+  document.getElementById('settingsExportJson').insertAdjacentHTML('afterend','<button class="btn btn-secondary btn-sm" id="settingsExportIcal"><i data-lucide="calendar" style="width:13px;height:13px"></i>iCal</button>');
+  document.getElementById('settingsExportIcal').addEventListener('click', exportICal);
+  lucide.createIcons();
+
+  // Settings: profils
+  document.getElementById('addProfilBtn').addEventListener('click',()=>{
+    const nom = prompt('Nom du nouveau profil :');
+    if (!nom || !nom.trim()) return;
+    const n = nom.trim();
+    if (profils.includes(n)) { showToast('Ce profil existe déjà','warning'); return; }
+    profils.push(n); saveProfils(); renderProfilSelector(); renderProfilSettings();
+  });
+
+  // Settings: skills
+  document.getElementById('saveSkillsBtn').addEventListener('click',()=>{
+    const raw = document.getElementById('skillsInput').value;
+    userSkills = raw.split(',').map(s=>s.trim()).filter(Boolean);
+    saveSkills(userSkills);
+    showToast(`${userSkills.length} compétence(s) enregistrées`,'success');
+    renderList();
+  });
+
+  // List: iCal export button
+  document.getElementById('exportCsvBtn').insertAdjacentHTML('beforebegin','<button class="btn btn-secondary btn-sm" id="exportIcalBtn"><i data-lucide="calendar" style="width:14px;height:14px"></i>iCal</button>');
+  document.getElementById('exportIcalBtn').addEventListener('click', exportICal);
+  lucide.createIcons();
+
   document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){closeModal();document.getElementById('notifPanel').classList.remove('open');closeDrawer();}
+    if(e.key==='Escape'){
+      closeModal();
+      document.getElementById('notifPanel').classList.remove('open');
+      document.getElementById('timelinePanel').classList.remove('open');
+      closeDrawer();
+    }
     if((e.ctrlKey||e.metaKey)&&e.key==='n'){e.preventDefault();openAdd();}
   });
   window.addEventListener('resize',()=>{if(document.getElementById('view-kanban').classList.contains('active'))renderKanban();});
 }
 
 // === EXPOSE TO WINDOW (needed for inline onclick handlers in module scope) ===
-Object.assign(window, { openEdit, doDeleteApp, doUpdateStatut, navigateTo });
+Object.assign(window, { openEdit, doDeleteApp, doUpdateStatut, navigateTo, openTimeline, openMailRelance, deleteProfil });
 
 // === LOGIN ===
 function initLogin() {
