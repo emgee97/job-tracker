@@ -148,7 +148,7 @@ input,select,textarea{font-family:inherit}
 .chart-container{position:relative;height:220px}
 
 /* === KANBAN === */
-.kanban-board{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.kanban-board{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;width:100%}
 .kanban-column{min-width:280px;flex-shrink:0;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);display:flex;flex-direction:column;max-height:calc(100vh - 140px);scroll-snap-align:start}
 .kanban-col-header{padding:1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-shrink:0;position:sticky;top:0;background:var(--bg-secondary);border-radius:var(--radius) var(--radius) 0 0;z-index:1}
 .kanban-col-title{font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:0.5rem}
@@ -254,7 +254,7 @@ input,select,textarea{font-family:inherit}
 
 /* === STATS === */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.stats-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+.stats-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;min-width:0}
 .stats-title{font-size:0.9rem;font-weight:600;color:var(--text-secondary);margin-bottom:1rem}
 .funnel-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem}
 .funnel-label{font-size:0.8rem;color:var(--text-secondary);width:120px;flex-shrink:0}
@@ -471,7 +471,9 @@ input,select,textarea{font-family:inherit}
   .modal-footer{flex-direction:row}
 
   /* Kanban */
-  .kanban-column{min-width:90vw}
+  #view-kanban{overflow-x:hidden}
+  .kanban-board{box-sizing:border-box;max-width:100%}
+  .kanban-column{min-width:85vw;max-width:85vw}
   .kanban-move-btns{display:flex}
 
   /* Timeline panel */
@@ -590,7 +592,10 @@ input,select,textarea{font-family:inherit}
   <section class="view active" id="view-dashboard">
     <div class="section-header">
       <h1 class="section-title">Dashboard</h1>
-      <button class="btn btn-primary" id="addBtnDash"><i data-lucide="plus" style="width:15px;height:15px"></i>Nouvelle candidature</button>
+      <div style="display:flex;gap:0.5rem">
+        <button class="btn btn-primary" id="addBtnDash"><i data-lucide="plus" style="width:15px;height:15px"></i>Nouvelle candidature</button>
+        <button class="btn btn-primary" id="weeklyBtn"><i data-lucide="bar-chart" style="width:15px;height:15px"></i>Rapport</button>
+      </div>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
     <div class="charts-grid">
@@ -1209,7 +1214,7 @@ function renderNotifPanel(overdue, upcoming) {
 
 // === DASHBOARD ===
 function renderDashboard() {
-  const d = appData;
+  const d = filteredData();
   const total = d.length;
   const reponses = d.filter(c => c.dateReponse || ['Entretien planifié','Entretien passé','Offre reçue','Refusée'].includes(c.statut)).length;
   const tauxReponse = total > 0 ? Math.round(reponses/total*100) : 0;
@@ -1225,7 +1230,7 @@ function renderDashboard() {
 }
 function renderDonutChart() {
   const counts = {}; STATUTS.forEach(s=>counts[s.id]=0);
-  appData.forEach(c=>{ if(counts[c.statut]!==undefined) counts[c.statut]++; });
+  filteredData().forEach(c=>{ if(counts[c.statut]!==undefined) counts[c.statut]++; });
   const labels = STATUTS.filter(s=>counts[s.id]>0).map(s=>s.id);
   const values = labels.map(l=>counts[l]);
   const colors = labels.map(l=>STATUTS.find(s=>s.id===l).color);
@@ -1241,7 +1246,7 @@ function renderBarChart() {
     const s=new Date(); s.setDate(s.getDate()-(i+1)*7);
     const e=new Date(); e.setDate(e.getDate()-i*7);
     const ss=s.toISOString().split('T')[0], ee=e.toISOString().split('T')[0];
-    weeks.push({ label:i===0?'Cette sem.':`S-${i}`, count:appData.filter(c=>c.dateCandidate>=ss&&c.dateCandidate<ee).length });
+    weeks.push({ label:i===0?'Cette sem.':`S-${i}`, count:filteredData().filter(c=>c.dateCandidate>=ss&&c.dateCandidate<ee).length });
   }
   if(chartBar) chartBar.destroy();
   const ctx=document.getElementById('chartBar').getContext('2d');
@@ -1250,7 +1255,7 @@ function renderBarChart() {
   chartBar = new Chart(ctx,{ type:'bar', data:{ labels:weeks.map(w=>w.label), datasets:[{ label:'Candidatures', data:weeks.map(w=>w.count), backgroundColor:'#6c63ff99', borderColor:'#6c63ff', borderWidth:1, borderRadius:6 }] }, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:textSec},grid:{color:'transparent'}}, y:{ticks:{color:textSec,stepSize:1},grid:{color:bdr}} } } });
 }
 function renderRecent() {
-  const recent=[...appData].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
+  const recent=[...filteredData()].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
   if(!recent.length){document.getElementById('recentList').innerHTML='<div class="empty-state"><p>Aucune candidature</p></div>';return;}
   document.getElementById('recentList').innerHTML=`<table class="data-table"><thead><tr><th>Entreprise</th><th>Poste</th><th>Statut</th><th>Date</th><th>Priorité</th></tr></thead><tbody>${recent.map(c=>`<tr style="cursor:pointer" onclick="openEdit('${c.id}')"><td data-label="Entreprise"><strong>${esc(c.entreprise)}</strong></td><td data-label="Poste">${esc(c.poste)}</td><td data-label="Statut">${statutBadge(c.statut)}</td><td data-label="Date" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem">${fmt(c.dateCandidate)}</td><td data-label="Priorité">${prioBadge(c.priorite)}</td></tr>`).join('')}</tbody></table>`;
 }
@@ -1260,7 +1265,7 @@ function renderKanban() {
   const board=document.getElementById('kanbanBoard'); board.innerHTML='';
   const isMobile=window.innerWidth<=640;
   STATUTS.forEach(s => {
-    const cards=appData.filter(c=>c.statut===s.id);
+    const cards=filteredData().filter(c=>c.statut===s.id);
     const col=document.createElement('div'); col.className='kanban-column'; col.dataset.statut=s.id;
     col.innerHTML=`<div class="kanban-col-header"><span class="kanban-col-title"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${s.color};flex-shrink:0"></span>${s.id}</span><span class="kanban-col-count">${cards.length}</span></div><div class="kanban-cards" data-statut="${s.id}"></div>`;
     board.appendChild(col);
@@ -1336,7 +1341,7 @@ function renderList() {
 
 // === STATS ===
 function renderStats() {
-  const d=appData, total=d.length;
+  const d=filteredData(), total=d.length;
   const funnel=[
     {label:'Candidatures',count:total},
     {label:'Réponses',count:d.filter(c=>['En attente','Entretien planifié','Entretien passé','Offre reçue'].includes(c.statut)).length},
@@ -1879,7 +1884,6 @@ function bindEvents(){
   document.getElementById('calToday').addEventListener('click',()=>{ calDate=new Date(); renderCalendrier(); });
 
   // Dashboard rapport
-  document.getElementById('addBtnDash').insertAdjacentHTML('afterend','<button class="btn btn-secondary" id="weeklyBtn" style="margin-left:0.5rem"><i data-lucide="bar-chart" style="width:15px;height:15px"></i>Rapport</button>');
   document.getElementById('weeklyBtn').addEventListener('click', openWeeklyReport);
   lucide.createIcons();
 
