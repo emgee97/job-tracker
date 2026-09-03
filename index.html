@@ -746,6 +746,17 @@ input,select,textarea{font-family:inherit}
     </div>
 
     <div class="settings-section">
+      <div class="settings-section-title"><i data-lucide="wand-2" style="width:18px;height:18px"></i>Import depuis une annonce</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:0.5rem">
+        <div><div class="settings-row-label">Favori "Importer l'annonce"</div><div class="settings-row-sub">Fonctionne même sur les sites qui bloquent l'analyse automatique (Indeed, LinkedIn…) : ouvre l'annonce dans ton navigateur, puis clique ce favori pour pré-remplir une candidature.</div></div>
+        <a href="javascript:void(0)" class="btn btn-secondary btn-sm" id="bookmarkletLink" onclick="return false" style="cursor:grab"><i data-lucide="bookmark-plus" style="width:13px;height:13px"></i>📥 Importer l'annonce</a>
+        <div class="settings-row-sub">Fais glisser ce bouton dans ta barre de favoris. Sur mobile ou si le glisser-déposer ne fonctionne pas : crée un nouveau favori et colle-y le code affiché ci-dessous dans le champ adresse/URL.</div>
+        <button class="btn btn-secondary btn-sm" id="showBookmarkletCodeBtn"><i data-lucide="code" style="width:13px;height:13px"></i>Afficher le code</button>
+        <textarea class="form-input" id="bookmarkletCode" rows="3" readonly style="width:100%;font-family:'JetBrains Mono',monospace;font-size:0.72rem;display:none" onclick="this.select()"></textarea>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <div class="settings-section-title"><i data-lucide="hard-drive" style="width:18px;height:18px"></i>Données</div>
       <div class="settings-row">
         <div><div class="settings-row-label">Exporter les données</div></div>
@@ -1122,6 +1133,8 @@ async function connectSupabase() {
     setupRealtime();
     schedulePeriodicCheck();
     checkShareMode();
+    renderBookmarklet();
+    checkAutofillMode();
 
     if (settings.notifEnabled) document.getElementById('toggleNotif').checked = true;
     document.getElementById('notifDays').value = settings.notifDays;
@@ -1760,6 +1773,36 @@ function generateShareLink() {
   document.getElementById('shareUrl').textContent = url;
   document.getElementById('shareOverlay').classList.add('open');
 }
+// === BOOKMARKLET (import annonce depuis le navigateur) ===
+function bookmarkletSource() {
+  const appUrl = `${location.origin}${location.pathname}`;
+  return `(function(){function fjp(d){if(!d)return null;var a=Array.isArray(d)?d:[d];for(var i=0;i<a.length;i++){var it=a[i];if(!it||typeof it!=='object')continue;var t=Array.isArray(it['@type'])?it['@type']:[it['@type']];if(t.indexOf('JobPosting')!==-1)return it;if(it['@graph']){var f=fjp(it['@graph']);if(f)return f;}}return null;}function el(jl){if(!jl)return'';var l=Array.isArray(jl)?jl[0]:jl;if(typeof l==='string')return l;var a=l&&l.address;if(!a)return'';return[a.addressLocality,a.addressRegion,a.addressCountry].filter(Boolean).join(', ');}function es(bs){if(!bs)return null;var v=bs.value||bs;var n=v.value!=null?v.value:(v.maxValue!=null?v.maxValue:v.minValue);if(n==null)return null;n=Number(n);if(!isFinite(n))return null;var u=String(v.unitText||bs.unitText||'').toUpperCase();if(u==='MONTH')n*=12;else if(u==='HOUR')n*=1820;else if(u==='WEEK')n*=52;return Math.round(n);}function sh(s){if(!s)return'';var d=document.createElement('div');d.innerHTML=s;return(d.textContent||d.innerText||'').replace(/\\s+/g,' ').trim();}var posting=null;var scripts=document.querySelectorAll('script[type="application/ld+json"]');for(var i=0;i<scripts.length;i++){try{var data=JSON.parse(scripts[i].textContent);posting=fjp(data);if(posting)break;}catch(e){}}var r;if(posting){r={poste:posting.title||document.title,entreprise:(posting.hiringOrganization&&posting.hiringOrganization.name)||'',lieu:el(posting.jobLocation),salaire:es(posting.baseSalary),notes:sh(posting.description).slice(0,1500),source:location.hostname.replace(/^www\\./,'')};}else{var og=function(p){var m=document.querySelector('meta[property="'+p+'"]');return m?m.content:'';};r={poste:og('og:title')||document.title,entreprise:'',lieu:'',salaire:null,notes:og('og:description')||'',source:og('og:site_name')||location.hostname.replace(/^www\\./,'')};}r.lienAnnonce=location.href;var enc=btoa(unescape(encodeURIComponent(JSON.stringify(r))));window.open('${appUrl}?autofill='+enc,'_blank');})();`;
+}
+function renderBookmarklet() {
+  const src = bookmarkletSource();
+  const link = document.getElementById('bookmarkletLink');
+  if (link) { link.setAttribute('href', 'javascript:' + encodeURIComponent(src)); link.removeAttribute('onclick'); }
+  const code = document.getElementById('bookmarkletCode');
+  if (code) code.value = 'javascript:' + src;
+}
+function checkAutofillMode() {
+  const params = new URLSearchParams(location.search);
+  const enc = params.get('autofill');
+  if (!enc) return;
+  history.replaceState(null, '', location.pathname);
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(enc))));
+    openAdd();
+    if (data.poste) document.getElementById('fPoste').value = data.poste;
+    if (data.entreprise) document.getElementById('fEntreprise').value = data.entreprise;
+    if (data.lieu) document.getElementById('fLieu').value = data.lieu;
+    if (data.salaire) document.getElementById('fSalaire').value = data.salaire;
+    if (data.source) document.getElementById('fSource').value = data.source;
+    if (data.notes) document.getElementById('fNotes').value = data.notes;
+    if (data.lienAnnonce) document.getElementById('fLien').value = data.lienAnnonce;
+    showToast('Annonce importée, vérifie les champs', 'success');
+  } catch(e) { console.error('Autofill decode error', e); showToast('Import du favori impossible', 'danger'); }
+}
 function checkShareMode() {
   const params = new URLSearchParams(location.search);
   const share = params.get('share');
@@ -1868,6 +1911,7 @@ function bindEvents(){
   document.getElementById('cancelModal').addEventListener('click',closeModal);
   document.getElementById('saveModal').addEventListener('click',saveModal);
   document.getElementById('analyzeLinkBtn').addEventListener('click',analyzeJobLink);
+  document.getElementById('showBookmarkletCodeBtn').addEventListener('click',()=>{const el=document.getElementById('bookmarkletCode');el.style.display=el.style.display==='none'?'block':'none';});
   document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
   document.getElementById('bellBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open');});
   document.getElementById('closeNotifPanel').addEventListener('click',()=>document.getElementById('notifPanel').classList.remove('open'));
