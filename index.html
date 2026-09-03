@@ -757,6 +757,15 @@ input,select,textarea{font-family:inherit}
     </div>
 
     <div class="settings-section">
+      <div class="settings-section-title"><i data-lucide="mail-check" style="width:18px;height:18px"></i>Reclassement automatique par email</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:0.5rem">
+        <div><div class="settings-row-label">Relève automatique de la boîte mail</div><div class="settings-row-sub">Une vérification tourne chaque jour (Vercel Cron) : détecte refus / entretien / offre par mots-clés dans les nouveaux mails et met à jour le statut des candidatures actives. Configuration requise côté serveur (mot de passe d'application Gmail) — voir la doc fournie.</div></div>
+        <button class="btn btn-secondary btn-sm" id="checkMailNowBtn"><i data-lucide="mail-search" style="width:13px;height:13px"></i>Vérifier mes mails maintenant</button>
+        <div class="settings-row-sub" id="checkMailResult"></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
       <div class="settings-section-title"><i data-lucide="hard-drive" style="width:18px;height:18px"></i>Données</div>
       <div class="settings-row">
         <div><div class="settings-row-label">Exporter les données</div></div>
@@ -1423,6 +1432,35 @@ function clearFormErrors(){
   ['fEntrepriseErr','fPosteErr','fLienErr'].forEach(id=>document.getElementById(id).textContent='');
   ['fEntreprise','fPoste','fLien'].forEach(id=>document.getElementById(id).classList.remove('error'));
 }
+async function checkMailNow() {
+  const btn=document.getElementById('checkMailNowBtn');
+  const resultEl=document.getElementById('checkMailResult');
+  const original=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='<i data-lucide="loader-2" class="spin" style="width:13px;height:13px"></i>Vérification...';
+  lucide.createIcons();
+  resultEl.textContent='';
+  try {
+    const resp=await fetch('/api/check-mail',{headers:{'x-app-password':APP_PASSWORD||''}});
+    const data=await resp.json();
+    if(!resp.ok) throw new Error(data.error||'Erreur inconnue');
+    if(data.updates&&data.updates.length){
+      resultEl.textContent=`${data.checked} mail(s) analysé(s) — ${data.updates.length} candidature(s) mise(s) à jour : ${data.updates.map(u=>`${u.entreprise} → ${u.statut}`).join(', ')}`;
+      showToast(`${data.updates.length} candidature(s) mise(s) à jour depuis vos mails`,'success');
+      await refreshData();
+    } else {
+      resultEl.textContent=`${data.checked} mail(s) analysé(s), aucune mise à jour détectée.`;
+      showToast('Vérification terminée, rien de nouveau','success');
+    }
+  } catch(e) {
+    resultEl.textContent='Erreur : '+e.message;
+    showToast('Vérification impossible : '+e.message,'danger');
+  } finally {
+    btn.disabled=false;
+    btn.innerHTML=original;
+    lucide.createIcons();
+  }
+}
 async function analyzeJobLink() {
   const lienInput=document.getElementById('fLien');
   const lien=lienInput.value.trim();
@@ -1912,6 +1950,7 @@ function bindEvents(){
   document.getElementById('saveModal').addEventListener('click',saveModal);
   document.getElementById('analyzeLinkBtn').addEventListener('click',analyzeJobLink);
   document.getElementById('showBookmarkletCodeBtn').addEventListener('click',()=>{const el=document.getElementById('bookmarkletCode');el.style.display=el.style.display==='none'?'block':'none';});
+  document.getElementById('checkMailNowBtn').addEventListener('click',checkMailNow);
   document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
   document.getElementById('bellBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open');});
   document.getElementById('closeNotifPanel').addEventListener('click',()=>document.getElementById('notifPanel').classList.remove('open'));
