@@ -763,6 +763,14 @@ input,select,textarea{font-family:inherit}
         <button class="btn btn-secondary btn-sm" id="checkMailNowBtn"><i data-lucide="mail-search" style="width:13px;height:13px"></i>Vérifier mes mails maintenant</button>
         <div class="settings-row-sub" id="checkMailResult"></div>
       </div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:0.5rem;margin-top:0.5rem;padding-top:0.75rem;border-top:1px dashed var(--border)">
+        <div><div class="settings-row-label">Scan rétroactif (à faire une seule fois)</div><div class="settings-row-sub">Analyse aussi les mails déjà reçus sur la période choisie pour rattraper l'historique de tes candidatures existantes. La détection reste par mots-clés : vérifie les résultats après coup.</div></div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+          <input type="number" class="form-input" id="backfillDays" value="30" min="1" max="90" style="width:80px">
+          <span style="font-size:0.8rem;color:var(--text-secondary)">derniers jours</span>
+          <button class="btn btn-secondary btn-sm" id="backfillMailBtn"><i data-lucide="history" style="width:13px;height:13px"></i>Scanner l'historique</button>
+        </div>
+      </div>
     </div>
 
     <div class="settings-section">
@@ -1432,16 +1440,17 @@ function clearFormErrors(){
   ['fEntrepriseErr','fPosteErr','fLienErr'].forEach(id=>document.getElementById(id).textContent='');
   ['fEntreprise','fPoste','fLien'].forEach(id=>document.getElementById(id).classList.remove('error'));
 }
-async function checkMailNow() {
-  const btn=document.getElementById('checkMailNowBtn');
+async function checkMailNow(days) {
+  const btn=document.getElementById(days?'backfillMailBtn':'checkMailNowBtn');
   const resultEl=document.getElementById('checkMailResult');
   const original=btn.innerHTML;
   btn.disabled=true;
-  btn.innerHTML='<i data-lucide="loader-2" class="spin" style="width:13px;height:13px"></i>Vérification...';
+  btn.innerHTML=`<i data-lucide="loader-2" class="spin" style="width:13px;height:13px"></i>${days?'Scan en cours...':'Vérification...'}`;
   lucide.createIcons();
   resultEl.textContent='';
   try {
-    const resp=await fetch('/api/check-mail',{headers:{'x-app-password':APP_PASSWORD||''}});
+    const url=days?`/api/check-mail?days=${encodeURIComponent(days)}`:'/api/check-mail';
+    const resp=await fetch(url,{headers:{'x-app-password':APP_PASSWORD||''}});
     const data=await resp.json();
     if(!resp.ok) throw new Error(data.error||'Erreur inconnue');
     if(data.updates&&data.updates.length){
@@ -1950,7 +1959,11 @@ function bindEvents(){
   document.getElementById('saveModal').addEventListener('click',saveModal);
   document.getElementById('analyzeLinkBtn').addEventListener('click',analyzeJobLink);
   document.getElementById('showBookmarkletCodeBtn').addEventListener('click',()=>{const el=document.getElementById('bookmarkletCode');el.style.display=el.style.display==='none'?'block':'none';});
-  document.getElementById('checkMailNowBtn').addEventListener('click',checkMailNow);
+  document.getElementById('checkMailNowBtn').addEventListener('click',()=>checkMailNow());
+  document.getElementById('backfillMailBtn').addEventListener('click',()=>{
+    const days=parseInt(document.getElementById('backfillDays').value,10)||30;
+    if(confirm(`Scanner les ${days} derniers jours et mettre à jour automatiquement les candidatures correspondantes ? Vérifie bien les résultats après.`)) checkMailNow(days);
+  });
   document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
   document.getElementById('bellBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open');});
   document.getElementById('closeNotifPanel').addEventListener('click',()=>document.getElementById('notifPanel').classList.remove('open'));

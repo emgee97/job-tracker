@@ -60,6 +60,9 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'Variables d\'environnement manquantes: ' + missing.join(', ') });
   }
 
+  const daysParam = parseInt((req.query && req.query.days) || '', 10);
+  const backfillDays = Number.isFinite(daysParam) && daysParam > 0 ? Math.min(daysParam, 90) : null;
+
   const db = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 
   let client;
@@ -80,17 +83,27 @@ module.exports = async function handler(req, res) {
     const updates = [];
     try {
       const uidNext = client.mailbox.uidNext;
-      const firstRun = state.last_uid == null;
-      const startUid = firstRun ? uidNext : state.last_uid + 1;
+      let fetchRange = null;
 
-      if (startUid <= uidNext - 1) {
+      if (backfillDays) {
+        const sinceDate = new Date();
+        sinceDate.setDate(sinceDate.getDate() - backfillDays);
+        const uids = await client.search({ since: sinceDate }, { uid: true });
+        if (uids && uids.length) fetchRange = uids.join(',');
+      } else {
+        const firstRun = state.last_uid == null;
+        const startUid = firstRun ? uidNext : state.last_uid + 1;
+        if (startUid <= uidNext - 1) fetchRange = `${startUid}:${uidNext - 1}`;
+      }
+
+      if (fetchRange) {
         const { data: candidatures, error } = await db
           .from('candidatures')
           .select('id, entreprise, statut, feedback')
           .not('statut', 'in', `(${CLOSED.map(s => `"${s}"`).join(',')})`);
         if (error) throw error;
 
-        for await (const msg of client.fetch(`${startUid}:${uidNext - 1}`, { envelope: true, source: true }, { uid: true })) {
+        for await (const msg of client.fetch(fetchRange, { envelope: true, source: true }, { uid: true })) {
           checked++;
           const parsed = await simpleParser(msg.source);
           const fromAddr = (parsed.from && parsed.from.value && parsed.from.value[0]) || {};
@@ -126,7 +139,7 @@ module.exports = async function handler(req, res) {
       lock.release();
     }
 
-    return res.status(200).json({ ok: true, checked, updates });
+    return res.status(200).json({ ok: true, checked, updates, mode: backfillDays ? `backfill:${backfillDays}j` : 'incremental' });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: e.message });
