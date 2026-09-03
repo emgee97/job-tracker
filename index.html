@@ -291,6 +291,7 @@ input,select,textarea{font-family:inherit}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 @keyframes fadeOut{to{opacity:0;transform:translateX(20px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 0.8s linear infinite}
 
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem}
 .section-title{font-size:1.1rem;font-weight:700}
@@ -815,7 +816,10 @@ input,select,textarea{font-family:inherit}
           </div>
           <div class="form-group full">
             <label class="form-label">Lien annonce</label>
-            <input type="url" class="form-input" id="fLien" placeholder="https://...">
+            <div style="display:flex;gap:0.5rem;align-items:flex-start">
+              <input type="url" class="form-input" id="fLien" placeholder="https://..." style="flex:1">
+              <button type="button" class="btn btn-secondary" id="analyzeLinkBtn" style="white-space:nowrap"><i data-lucide="wand-2" style="width:15px;height:15px"></i>Analyser</button>
+            </div>
             <span class="form-error" id="fLienErr"></span>
           </div>
           <div class="form-group">
@@ -1406,6 +1410,34 @@ function clearFormErrors(){
   ['fEntrepriseErr','fPosteErr','fLienErr'].forEach(id=>document.getElementById(id).textContent='');
   ['fEntreprise','fPoste','fLien'].forEach(id=>document.getElementById(id).classList.remove('error'));
 }
+async function analyzeJobLink() {
+  const lienInput=document.getElementById('fLien');
+  const lien=lienInput.value.trim();
+  if(!lien||!lien.startsWith('http')){ showToast('Colle d\'abord un lien d\'annonce valide','warning'); return; }
+  const btn=document.getElementById('analyzeLinkBtn');
+  const original=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='<i data-lucide="loader-2" class="spin" style="width:15px;height:15px"></i>Analyse...';
+  lucide.createIcons();
+  try {
+    const resp=await fetch('/api/parse-job?url='+encodeURIComponent(lien));
+    const data=await resp.json();
+    if(!resp.ok) throw new Error(data.error||'Erreur inconnue');
+    if(data.poste) document.getElementById('fPoste').value=data.poste;
+    if(data.entreprise) document.getElementById('fEntreprise').value=data.entreprise;
+    if(data.lieu) document.getElementById('fLieu').value=data.lieu;
+    if(data.salaire) document.getElementById('fSalaire').value=data.salaire;
+    if(data.source) document.getElementById('fSource').value=data.source;
+    if(data.notes) document.getElementById('fNotes').value=data.notes;
+    showToast(data.found?'Annonce analysée, vérifie les champs':'Analyse partielle, complète les champs manquants','success');
+  } catch(e) {
+    showToast('Analyse impossible : '+e.message,'danger');
+  } finally {
+    btn.disabled=false;
+    btn.innerHTML=original;
+    lucide.createIcons();
+  }
+}
 async function saveModal() {
   clearFormErrors();
   let valid=true;
@@ -1835,6 +1867,7 @@ function bindEvents(){
   document.getElementById('closeModal').addEventListener('click',closeModal);
   document.getElementById('cancelModal').addEventListener('click',closeModal);
   document.getElementById('saveModal').addEventListener('click',saveModal);
+  document.getElementById('analyzeLinkBtn').addEventListener('click',analyzeJobLink);
   document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
   document.getElementById('bellBtn').addEventListener('click',e=>{e.stopPropagation();document.getElementById('notifPanel').classList.toggle('open');});
   document.getElementById('closeNotifPanel').addEventListener('click',()=>document.getElementById('notifPanel').classList.remove('open'));
