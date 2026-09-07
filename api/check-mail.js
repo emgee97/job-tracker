@@ -6,6 +6,7 @@
 const { ImapFlow } = require('imapflow');
 const { simpleParser } = require('mailparser');
 const { createClient } = require('@supabase/supabase-js');
+const he = require('he');
 
 const CLOSED = ['Refusée', 'Abandonnée'];
 
@@ -110,8 +111,11 @@ module.exports = async function handler(req, res) {
           const fromEmail = fromAddr.address || '';
           const fromName = fromAddr.name || '';
           const domain = fromEmail.split('@')[1] || '';
-          const bodyText = (parsed.text || '').slice(0, 5000);
-          const subject = parsed.subject || '';
+          // Certains expéditeurs (ex: SmartRecruiters/Mailgun) laissent des
+          // entités HTML non décodées dans leur partie "texte brut" (&eacute;,
+          // &rsquo;, &nbsp;...) : on décode systématiquement par sécurité.
+          const bodyText = he.decode(parsed.text || '').slice(0, 5000);
+          const subject = he.decode(parsed.subject || '');
 
           const newStatut = classify(subject + '\n' + bodyText);
           if (!newStatut) continue;
