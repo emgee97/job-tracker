@@ -113,11 +113,11 @@ module.exports = async function handler(req, res) {
           const bodyText = (parsed.text || '').slice(0, 5000);
           const subject = parsed.subject || '';
 
-          const match = findMatchingCandidature(candidatures, fromName, domain);
-          if (!match) continue;
-
           const newStatut = classify(subject + '\n' + bodyText);
           if (!newStatut) continue;
+
+          const match = findMatchingCandidature(candidatures, fromName, domain, subject + ' ' + bodyText);
+          if (!match) continue;
 
           const today = new Date().toISOString().split('T')[0];
           const note = `[Auto-détecté ${today}] "${subject}" → ${newStatut}`;
@@ -177,15 +177,22 @@ function normalize(s) {
     .replace(/[^a-z0-9]/g, '');
 }
 
-function findMatchingCandidature(candidatures, fromName, domain) {
-  const domainRoot = normalize((domain.split('.')[0] || ''));
+function findMatchingCandidature(candidatures, fromName, domain, contentText) {
+  // Le nom de domaine entier est normalisé (pas juste le premier segment) car
+  // beaucoup d'entreprises envoient depuis un sous-domaine dédié au recrutement
+  // (recruitment.acme.com, jobs.acme.com, careers.acme.com...).
+  const domainNorm = normalize(domain);
   const nameNorm = normalize(fromName);
+  const contentNorm = normalize((contentText || '').slice(0, 3000));
   for (const c of candidatures) {
     const entrepriseNorm = normalize(c.entreprise);
     if (entrepriseNorm.length < 3) continue;
-    const domainMatch = domainRoot.length >= 3 && (domainRoot.includes(entrepriseNorm) || entrepriseNorm.includes(domainRoot));
+    const domainMatch = domainNorm.includes(entrepriseNorm);
     const nameMatch = nameNorm.length >= 3 && (nameNorm.includes(entrepriseNorm) || entrepriseNorm.includes(nameNorm));
-    if (domainMatch || nameMatch) return c;
+    // Signal plus faible (le corps du mail peut mentionner d'autres sociétés) :
+    // on exige un nom d'entreprise un peu plus long pour limiter les faux positifs.
+    const contentMatch = entrepriseNorm.length >= 4 && contentNorm.includes(entrepriseNorm);
+    if (domainMatch || nameMatch || contentMatch) return c;
   }
   return null;
 }
